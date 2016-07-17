@@ -1,0 +1,30 @@
+{
+    "data": [
+        {
+            "id": "464",
+            "type": "root",
+            "attributes": {
+                "senses": []
+            },
+            "links": {
+                "self": "https://api.vandemataramlibrary.org/roots/464"
+            }
+        },
+        {
+            "id": "465",
+            "type": "root",
+            "attributes": {
+                "senses": []
+            },
+            "links": {
+                "self": "https://api.vandemataramlibrary.org/roots/465"
+            }
+        }
+    ],
+    "links": {
+        "self": "https://api.vandemataramlibrary.org/roots/search?root=vap"
+    },
+    "jsonapi": {
+        "version": "1.0"
+    }
+}
