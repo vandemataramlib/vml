@@ -50,6 +50,9 @@ const manifest = {
             plugin: "./server/api/prefixes"
         },
         {
+            plugin: "./server/api/documentList"
+        },
+        {
             plugin: "inert"
         },
         {
@@ -79,6 +82,10 @@ const manifest = {
                         {
                             name: "prefixes",
                             description: "Prefixes API"
+                        },
+                        {
+                            name: "docList",
+                            description: "Document List API"
                         }
                     ]
                 }
