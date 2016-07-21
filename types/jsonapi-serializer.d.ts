@@ -6,6 +6,7 @@ declare module "jsonapi-serializer" {
 
     export class Deserializer {
         constructor(opts?: any);
-        deserialize(data: any): any;
+        deserialize(data: any, cb: (err: Error, data: any) => void): any;
+        deserialize(data: any): Promise<any>;
     }
 }
