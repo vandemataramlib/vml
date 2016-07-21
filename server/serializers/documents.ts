@@ -6,7 +6,8 @@ export const getChapterSerializer = (type: string, selfURL: string) => {
         topLevelLinks: {
             self: selfURL
         },
-        attributes: ["contents", "docType"],
+        id: "_id",
+        attributes: ["title", "url", "contents", "docType"],
         keyForAttribute: "camelCase",
         contents: {
             attributes: ["stanzas"],

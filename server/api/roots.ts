@@ -1,10 +1,9 @@
 import * as Hapi from "hapi";
 import * as Joi from "joi";
-import { Serializer } from "jsonapi-serializer";
+import { Db, ObjectID } from "mongodb";
 
 import { HapiPlugin } from "../common/interfaces";
 import { getRootSerializer } from "../serializers/roots";
-import { roots } from "../documents/roots";
 import { Root } from "../models/Root";
 import { API_SERVER_BASE_URL } from "../utils/constants";
 
@@ -114,7 +113,10 @@ class Roots {
 
     private getRoots = (request: Hapi.Request, reply: Hapi.IReply) => {
 
-        return reply(roots);
+        const db: Db = request.server.plugins["hapi-mongodb"].db;
+
+        db.collection(Root.collection).find().toArray()
+            .then(roots => reply(roots));
     }
 
     private getSerializedRoots = (request: Hapi.Request, reply: Hapi.IReply) => {
@@ -124,7 +126,7 @@ class Roots {
             self: () => API_SERVER_BASE_URL + request.url.path
         };
         const dataLinks = {
-            self: (root: Root) => Root.URL(root.id)
+            self: (root: Root) => Root.URL(root._id)
         };
 
         return reply(getRootSerializer("roots", topLevelLinks, dataLinks).serialize(preParams.roots));
@@ -149,7 +151,10 @@ class Roots {
 
         const params: Params = request.params;
 
-        return reply(roots.find(root => root.id === params.id));
+        const db: Db = request.server.plugins["hapi-mongodb"].db;
+
+        db.collection(Root.collection).findOne({ _id: new ObjectID(params.id) })
+            .then(roots => reply(roots));
     }
 
     private getSerializedRoot = (request: Hapi.Request, reply: Hapi.IReply) => {
@@ -158,9 +163,12 @@ class Roots {
 
         const root = preParams.root;
 
-        const topLevelLinks = {
-            self: Root.URL(root.id)
-        };
+        let topLevelLinks: any;
+
+        if (root) {
+            topLevelLinks = {};
+            topLevelLinks.self = Root.URL(root._id);
+        }
 
         const rootSerializer = getRootSerializer("root", topLevelLinks);
 

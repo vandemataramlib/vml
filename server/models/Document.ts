@@ -20,30 +20,41 @@ export interface Subsection extends MetaStructure {
     data: Chapter[];
 }
 
+export enum ContentType {
+    Padya,
+    Gadya,
+    Sutra,
+    Bhashya,
+    Mishra,
+    Natya
+}
+
 export interface IChapter extends MetaStructure {
     stanzas?: Stanza[];
     segments?: Segment[];
+    contentType: ContentType;
 }
 
 export class Chapter implements IChapter {
     id: string;
     stanzas: Stanza[];
     segments: Segment[];
+    contentType: ContentType;
     constructor(data: any) { }
 }
 
 export interface Segment extends MetaStructure {
 
-    data: Stanza[];
+    stanzas: Stanza[];
 }
 
 export class Stanza implements MetaStructure {
-    static URL = (documentSlug: string, subdocumentId: string, recordId: string, stanzaId: string) => {
+    static URL = (slug: string, subdocId: string, recordId: string, stanzaId: string) => {
 
-        let url = `${API_SERVER_BASE_URL}/docs/${documentSlug}`;
+        let url = `${API_SERVER_BASE_URL}/docs/${slug}`;
 
-        if (subdocumentId) {
-            url += `/subdocs/${subdocumentId}`;
+        if (subdocId) {
+            url += `/subdocs/${subdocId}`;
         }
 
         if (recordId) {
@@ -117,17 +128,18 @@ export enum DocType {
 
 export interface IDocument extends MetaStructure {
     url: string;
-    docType: string;
+    docType: DocType;
     contents: Chapter | Volume | Collection;
 }
 
 export class Document implements IDocument {
     id: string;
-    docType: string;
+    docType: DocType;
     url: string;
     title: string;
     contents: Chapter | Volume | Collection;
 
+    static collection = "documents";
     static documentURL = (documentSlug: string) => `${API_SERVER_BASE_URL}/docs/${documentSlug}`;
     static subdocumentURL = (documentSlug: string, subdocumentId: string) => {
 
@@ -137,10 +149,24 @@ export class Document implements IDocument {
 
         return `${API_SERVER_BASE_URL}/docs/${documentSlug}/subdocs/${subdocumentId}/records/${recordId}`;
     };
+    static URL = (slug: string, subdocId: string, recordId: string) => {
+
+        let url = `${API_SERVER_BASE_URL}/docs/${slug}`;
+
+        if (subdocId) {
+            url += `/subdocs/${subdocId}`;
+        }
+
+        if (recordId) {
+            url += `/records/${recordId}`;
+        }
+
+        return url;
+    };
 
     constructor(docType: DocType, title: string, data: any, id?: string) {
 
-        this.docType = DocType[docType];
+        this.docType = docType;
         this.title = title;
 
         if (id) {

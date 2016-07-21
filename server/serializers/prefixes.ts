@@ -5,6 +5,7 @@ export const getPrefixSerializer = (type: string, topLevelLinks?: any, dataLinks
     const serializer = {
         topLevelLinks,
         dataLinks,
+        id: "_id",
         keyForAttribute: "camelCase",
         attributes: ["prefix", "senses"]
     };

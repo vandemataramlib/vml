@@ -1,10 +1,9 @@
 import * as Hapi from "hapi";
 import * as Joi from "joi";
-import { Serializer } from "jsonapi-serializer";
+import { Db, ObjectID } from "mongodb";
 
 import { HapiPlugin } from "../common/interfaces";
 import { getPrefixSerializer } from "../serializers/prefixes";
-import { prefixes } from "../documents/prefixes";
 import { Prefix } from "../models/Prefix";
 import { API_SERVER_BASE_URL } from "../utils/constants";
 
@@ -113,7 +112,10 @@ class Prefixes {
 
     private getPrefixes = (request: Hapi.Request, reply: Hapi.IReply) => {
 
-        return reply(prefixes);
+        const db: Db = request.server.plugins["hapi-mongodb"].db;
+
+        db.collection(Prefix.collection).find().toArray()
+            .then(prefixes => reply(prefixes));
     }
 
     private getSerializedPrefixes = (request: Hapi.Request, reply: Hapi.IReply) => {
@@ -125,7 +127,7 @@ class Prefixes {
         };
 
         const dataLinks = {
-            self: (prefix: Prefix) => Prefix.URL(prefix.id)
+            self: (prefix: Prefix) => Prefix.URL(prefix._id)
         };
 
         const serializer = getPrefixSerializer("prefixes", topLevelLinks, dataLinks);
@@ -144,7 +146,10 @@ class Prefixes {
 
         const params: Params = request.params;
 
-        return reply(prefixes.find(prefix => prefix.id === params.id));
+        const db: Db = request.server.plugins["hapi-mongodb"].db;
+
+        db.collection(Prefix.collection).findOne({ _id: new ObjectID(params.id) })
+            .then(prefix => reply(prefix));
     }
 
     private getSerializedPrefix = (request: Hapi.Request, reply: Hapi.IReply) => {

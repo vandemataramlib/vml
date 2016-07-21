@@ -5,6 +5,7 @@ export const getRootSerializer = (type: string, topLevelLinks?: any, dataLinks?:
     const options = {
         topLevelLinks,
         dataLinks,
+        id: "_id",
         attributes: ["root", "senses"],
         keyForAttribute: "camelCase"
     };

@@ -1,9 +1,9 @@
 import * as Hapi from "hapi";
 import * as Joi from "joi";
+import { Db } from "mongodb";
 
 import { HapiPlugin } from "../common/interfaces";
 import { getChapterSerializer } from "../serializers/documents";
-import { bootstrapData } from "../documents/bootstrapData";
 import { Document, DocType } from "../models/Document";
 import { API_SERVER_BASE_URL } from "../utils/constants";
 
@@ -59,7 +59,10 @@ class SubDocuments {
 
     private getSubdocument = (request: Hapi.Request, reply: Hapi.IReply) => {
 
-        reply(bootstrapData.find(data => data.url === request.url.path));
+        const db: Db = request.server.plugins["hapi-mongodb"].db;
+
+        db.collection(Document.collection).findOne({ url: request.url.path })
+            .then(record => reply(record));
     }
 
     private getSerializedSubdocument = (request: Hapi.Request, reply: Hapi.IReply) => {
@@ -69,7 +72,7 @@ class SubDocuments {
 
         let documentSerializer: any;
 
-        if (preParams.subdocument.docType === DocType.Chapter.toString()) {
+        if (preParams.subdocument.docType === DocType.Chapter) {
             documentSerializer = getChapterSerializer("subdocuments", Document.subdocumentURL(params.slug, params.subdocId));
         }
 

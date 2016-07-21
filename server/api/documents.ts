@@ -1,9 +1,9 @@
 import * as Hapi from "hapi";
 import * as Joi from "joi";
+import { Db } from "mongodb";
 
 import { getChapterSerializer } from "../serializers/documents";
 import { HapiPlugin } from "../common/interfaces";
-import { bootstrapData } from "../documents/bootstrapData";
 import { IDocument, Document, DocType } from "../models/Document";
 
 interface PreParams {
@@ -54,7 +54,10 @@ class Documents {
 
     private getDocument = (request: Hapi.Request, reply: Hapi.IReply) => {
 
-        reply(bootstrapData.find(data => data.url === request.url.path));
+        const db: Db = request.server.plugins["hapi-mongodb"].db;
+
+        db.collection(Document.collection).findOne({ url: request.url.path })
+            .then(record => reply(record));
     }
 
     private getSerialisedDocument = (request: Hapi.Request, reply: Hapi.IReply) => {
@@ -64,7 +67,7 @@ class Documents {
 
         let documentSerializer: any;
 
-        if (preParams.document.docType === DocType.Chapter.toString()) {
+        if (preParams.document.docType === DocType.Chapter) {
             documentSerializer = getChapterSerializer("documents", Document.documentURL(params.slug));
         }
 

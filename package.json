@@ -27,11 +27,13 @@
     "core-js": "^2.4.0",
     "glue": "3.x.x",
     "hapi": "13.x.x",
+    "hapi-mongodb": "^6.0.0",
     "hapi-swagger": "^6.1.0",
     "hoek": "4.x.x",
     "inert": "^4.0.1",
     "joi": "^9.0.1",
     "jsonapi-serializer": "^3.2.1",
+    "mongodb": "^2.2.4",
     "sanscript": "0.0.2",
     "vision": "^4.1.0"
   },

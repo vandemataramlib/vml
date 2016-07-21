@@ -1,11 +1,22 @@
 import * as Hapi from "hapi";
 import * as Joi from "joi";
-import { Serializer } from "jsonapi-serializer";
+import { Db } from "mongodb";
 
 import { HapiPlugin } from "../common/interfaces";
 import { getStanzaSerializer } from "../serializers/stanzas";
-import { bootstrapData } from "../documents/bootstrapData";
 import { IDocument, Document, DocType, IChapter, Stanza as StanzaObj } from "../models/Document";
+
+interface Params {
+    slug?: string;
+    subdocId?: string;
+    recordId?: string;
+    stanzaId?: string;
+}
+
+interface PreParams {
+    document?: Document;
+    serializedStanza?: any;
+}
 
 class Stanza {
     options: any;
@@ -21,7 +32,6 @@ class Stanza {
         server.route({
             path: "/docs/{slug}/subdocs/{subdocId}/records/{recordId}/stanzas/{stanzaId}",
             method: "GET",
-            handler: this.getStanza,
             config: {
                 description: "Get a stanza from a record",
                 notes: "Returns a stanza by the document slug, subdocId, recordId and stanzaId passed in the path",
@@ -46,14 +56,18 @@ class Stanza {
                             .required()
                             .description("the id of the stanza")
                     }
-                }
+                },
+                pre: [
+                    { method: this.getStanza, assign: "document" },
+                    { method: this.getSerializedStanza, assign: "serializedStanza" }
+                ],
+                handler: this.replyWithStanza
             }
         });
 
         server.route({
             path: "/docs/{slug}/stanzas/{stanzaId}",
             method: "GET",
-            handler: this.getStanza,
             config: {
                 description: "Get a stanza from a document",
                 notes: "Returns a stanza by the document slug and stanzaId passed in the path",
@@ -72,14 +86,18 @@ class Stanza {
                             .required()
                             .description("the id of the stanza")
                     }
-                }
+                },
+                pre: [
+                    { method: this.getStanza, assign: "document" },
+                    { method: this.getSerializedStanza, assign: "serializedStanza" }
+                ],
+                handler: this.replyWithStanza
             }
         });
 
         server.route({
             path: "/docs/{slug}/subdocs/{subdocId}/stanzas/{stanzaId}",
             method: "GET",
-            handler: this.getStanza,
             config: {
                 description: "Get a stanza from a subdocument",
                 notes: "Returns a stanza by the document slug, subdocId and stanzaId passed in the path",
@@ -101,7 +119,12 @@ class Stanza {
                             .required()
                             .description("the id of the stanza")
                     }
-                }
+                },
+                pre: [
+                    { method: this.getStanza, assign: "document" },
+                    { method: this.getSerializedStanza, assign: "serializedStanza" }
+                ],
+                handler: this.replyWithStanza
             }
         });
 
@@ -114,17 +137,41 @@ class Stanza {
 
         const documentPath = requestPath.substr(0, requestPath.indexOf("/stanzas"));
 
-        const document: IDocument = bootstrapData.find(data => data.url === documentPath);
+        const db: Db = request.server.plugins["hapi-mongodb"].db;
 
-        const chapter = <IChapter>document.contents;
+        db.collection(Document.collection).findOne({ url: documentPath })
+            .then(record => reply(record));
+    }
 
-        const stanza = chapter.stanzas.find(stanza => stanza.id === request.params.stanzaId);
+    getSerializedStanza = (request: Hapi.Request, reply: Hapi.IReply) => {
 
-        const stanzaSerializer = getStanzaSerializer("stanzas",
-            StanzaObj.URL(request.params.slug, request.params.subdocId,
-                request.params.recordId, request.params.stanzaId));
+        const preParams: PreParams = request.pre;
 
-        reply(stanzaSerializer.serialize(stanza));
+        let stanza: StanzaObj = null;
+        let topLevelLinks: any = null;
+
+        if (preParams.document) {
+            const chapter = <IChapter>preParams.document.contents;
+            let localStanza = chapter.stanzas.find(stanza => stanza.id === request.params.stanzaId);
+            if (localStanza) {
+                stanza = localStanza;
+                topLevelLinks = {
+                    self: StanzaObj.URL(request.params.slug, request.params.subdocId,
+                        request.params.recordId, request.params.stanzaId)
+                };
+            }
+        }
+
+        const stanzaSerializer = getStanzaSerializer("stanzas", topLevelLinks);
+
+        return reply(stanzaSerializer.serialize(stanza));
+    }
+
+    replyWithStanza = (request: Hapi.Request, reply: Hapi.IReply) => {
+
+        const preParams: PreParams = request.pre;
+
+        reply(preParams.serializedStanza);
     }
 }
 

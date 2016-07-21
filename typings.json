@@ -7,6 +7,7 @@
     "node": "registry:dt/node#6.0.0+20160621231320"
   },
   "dependencies": {
-    "glue": "registry:npm/glue#3.3.0+20160618213616"
+    "glue": "registry:npm/glue#3.3.0+20160618213616",
+    "mongodb": "registry:npm/mongodb#2.1.0+20160720065455"
   }
 }

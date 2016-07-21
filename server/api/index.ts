@@ -1,4 +1,5 @@
 import * as Hapi from "hapi";
+import * as MongoClient from "mongodb";
 
 exports.register = function (server: Hapi.Server, options: any, next: Function) {
 
@@ -7,7 +8,10 @@ exports.register = function (server: Hapi.Server, options: any, next: Function) 
         path: "/",
         handler: function (request, reply) {
 
-            reply({ message: "Welcome to the plot device." });
+            const db: MongoClient.Db = request.server.plugins["hapi-mongodb"].db;
+
+            db.collection("documents").findOne({ url: "/docs/ishopanishad" })
+                .then(rec => reply(rec));
         }
     });
 

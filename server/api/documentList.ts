@@ -1,12 +1,13 @@
 import * as Hapi from "hapi";
 import * as Joi from "joi";
+import { Db } from "mongodb";
 
-import { bootstrapData } from "../documents/bootstrapData";
 import { getDocumentListSerializer } from "../serializers/documentList";
 import { API_SERVER_BASE_URL } from "../utils/constants";
+import { IDocumentListGroup, DocumentListGroup } from "../models/DocumentList";
 
 interface PreParams {
-    docList?: any;
+    docList?: IDocumentListGroup[];
     serialisedDocList?: any;
 }
 
@@ -38,7 +39,10 @@ class DocumentList {
 
     private getDocList = (request: Hapi.Request, reply: Hapi.IReply) => {
 
-        reply(bootstrapData.map(data => { return { title: data.title, url: data.url, id: data.id }; }));
+        const db: Db = request.server.plugins["hapi-mongodb"].db;
+
+        db.collection(DocumentListGroup.collection).find().toArray()
+            .then(docLists => reply(docLists));
     }
 
     private getSerialisedDocList = (request: Hapi.Request, reply: Hapi.IReply) => {
@@ -49,7 +53,11 @@ class DocumentList {
             self: API_SERVER_BASE_URL + request.url.path
         };
 
-        const serializer = getDocumentListSerializer("documents", topLevelLinks);
+        const dataLinks = {
+            self: (documentListGroup: IDocumentListGroup) => DocumentListGroup.URL(documentListGroup._id)
+        };
+
+        const serializer = getDocumentListSerializer("documentListGroup", topLevelLinks, dataLinks);
 
         reply(serializer.serialize(preParams.docList));
     }

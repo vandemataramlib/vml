@@ -1,11 +1,10 @@
 import { Serializer } from "jsonapi-serializer";
 
-export const getStanzaSerializer = (type: string, selfURL: string) => {
+export const getStanzaSerializer = (type: string, topLevelLinks?: any) => {
 
     const serializer = {
-        topLevelLinks: {
-            self: selfURL
-        },
+        topLevelLinks,
+        id: "_id",
         keyForAttribute: "camelCase",
         attributes: ["lines", "analysis", "stanza"]
     };
