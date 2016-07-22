@@ -70,6 +70,14 @@ export class Stanza implements MetaStructure {
     lines: Line[];
     stanza: string;
     analysis: Token[];
+    constructor(data: Stanza, id?: string) {
+        this.lines = data.lines;
+        // this.stanza = data.stanza;
+        this.analysis = data.analysis;
+        if (id) {
+            this.id = id;
+        }
+    }
 }
 
 export interface Line {

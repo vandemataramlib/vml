@@ -52,6 +52,9 @@ const manifest = {
         {
             plugin: "./server/api/documentList"
         },
+        // {
+        //     plugin: "./server/api/index"
+        // },
         {
             plugin: "inert"
         },

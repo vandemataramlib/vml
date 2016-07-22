@@ -1,6 +1,6 @@
 import * as Hapi from "hapi";
 import * as Joi from "joi";
-import { Db, ObjectID } from "mongodb";
+import { Db, ObjectID, Collection } from "mongodb";
 
 import { HapiPlugin } from "../common/interfaces";
 import { getRootSerializer } from "../serializers/roots";
@@ -24,7 +24,7 @@ interface PreParams {
 
 
 class Roots {
-    options: any;
+    dbCollection: Collection;
 
     static attributes = {
         name: "roots"
@@ -32,7 +32,7 @@ class Roots {
 
     constructor(server: Hapi.Server, options: any, next: Function) {
 
-        this.options = options;
+        server.dependency("hapi-mongodb", this.setDbCollection);
 
         server.route({
             method: "GET",
@@ -108,14 +108,21 @@ class Roots {
             }
         });
 
-        next();
+        return next();
+    }
+
+    private setDbCollection = (server: Hapi.Server, next: Function) => {
+
+        const db: Db = server.plugins["hapi-mongodb"].db;
+
+        this.dbCollection = db.collection(Root.collection);
+
+        return next();
     }
 
     private getRoots = (request: Hapi.Request, reply: Hapi.IReply) => {
 
-        const db: Db = request.server.plugins["hapi-mongodb"].db;
-
-        db.collection(Root.collection).find().toArray()
+        this.dbCollection.find().toArray()
             .then(roots => reply(roots));
     }
 
@@ -151,9 +158,7 @@ class Roots {
 
         const params: Params = request.params;
 
-        const db: Db = request.server.plugins["hapi-mongodb"].db;
-
-        db.collection(Root.collection).findOne({ _id: new ObjectID(params.id) })
+        this.dbCollection.findOne({ _id: new ObjectID(params.id) })
             .then(roots => reply(roots));
     }
 

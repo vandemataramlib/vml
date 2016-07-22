@@ -1,6 +1,6 @@
 import * as Hapi from "hapi";
 import * as Joi from "joi";
-import { Db } from "mongodb";
+import { Db, Collection } from "mongodb";
 
 import { HapiPlugin } from "../common/interfaces";
 import { Document } from "../models/Document";
@@ -19,11 +19,11 @@ interface PreParams {
 }
 
 class Records {
-    options: any;
+    dbCollection: Collection;
 
     constructor(server: Hapi.Server, options: any, next: Function) {
 
-        this.options = options;
+        server.dependency("hapi-mongodb", this.setDbCollection);
 
         server.route({
             path: "/docs/{slug}/subdocs/{subdocId}/records/{recordId}",
@@ -58,14 +58,21 @@ class Records {
             }
         });
 
-        next();
+        return next();
+    }
+
+    private setDbCollection = (server: Hapi.Server, next: Function) => {
+
+        const db: Db = server.plugins["hapi-mongodb"].db;
+
+        this.dbCollection = db.collection(Document.collection);
+
+        return next();
     }
 
     private getRecord = (request: Hapi.Request, reply: Hapi.IReply) => {
 
-        const db: Db = request.server.plugins["hapi-mongodb"].db;
-
-        db.collection(Document.collection).findOne({ url: request.url.path })
+        this.dbCollection.findOne({ url: request.url.path })
             .then(record => reply(record));
     }
 
