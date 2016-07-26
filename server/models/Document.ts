@@ -1,23 +1,23 @@
-import { API_SERVER_BASE_URL } from "../utils/constants";
+import { API_SERVER_BASE_URL } from "../common/constants";
 
-export interface Book extends MetaStructure {
+export interface Book extends LogicalEntity {
 
-    data: Chapter[] | Part[];
+    contents: Chapter[] | Part[];
 }
 
-export interface Part extends MetaStructure {
+export interface Part extends LogicalEntity {
 
-    data: Chapter[] | Section[];
+    contents: Chapter[] | Section[];
 }
 
-export interface Section extends MetaStructure {
+export interface Section extends LogicalEntity {
 
-    data: Chapter[] | Subsection[];
+    contents: Chapter[] | Subsection[];
 }
 
-export interface Subsection extends MetaStructure {
+export interface Subsection extends LogicalEntity {
 
-    data: Chapter[];
+    contents: Chapter[];
 }
 
 export enum ContentType {
@@ -29,26 +29,24 @@ export enum ContentType {
     Natya
 }
 
-export interface IChapter extends MetaStructure {
-    stanzas?: Stanza[];
-    segments?: Segment[];
+export interface IChapter extends LogicalEntity {
+    segments: Segment[];
     contentType: ContentType;
 }
 
 export class Chapter implements IChapter {
-    id: string;
-    stanzas: Stanza[];
+    id: number;
     segments: Segment[];
     contentType: ContentType;
     constructor(data: any) { }
 }
 
-export interface Segment extends MetaStructure {
+export interface Segment extends LogicalEntity {
 
     stanzas: Stanza[];
 }
 
-export class Stanza implements MetaStructure {
+export class Stanza implements LogicalEntity {
     static URL = (slug: string, subdocId: string, recordId: string, stanzaId: string) => {
 
         let url = `${API_SERVER_BASE_URL}/docs/${slug}`;
@@ -66,13 +64,14 @@ export class Stanza implements MetaStructure {
         return url;
     };
 
-    id: string;
+    id: number;
+    segmentId: number;
+    runningId: string;
     lines: Line[];
     stanza: string;
     analysis: Token[];
-    constructor(data: Stanza, id?: string) {
+    constructor(data: Stanza, id?: number) {
         this.lines = data.lines;
-        // this.stanza = data.stanza;
         this.analysis = data.analysis;
         if (id) {
             this.id = id;
@@ -103,8 +102,6 @@ enum DocumentDataTypes {
     books
 }
 
-type TextOrChapterOrBookArray = Stanza[] | Chapter[] | Book[];
-
 interface IVolume { }
 
 class Volume implements IVolume {
@@ -118,12 +115,19 @@ class Collection implements ICollection {
 }
 
 interface MetaStructure {
-    id: string;
     title?: string;
     subtitle?: string;
     desc?: string;
     meta?: any;
     dataType?: string;
+}
+
+interface LogicalEntity extends MetaStructure {
+    id: number;
+}
+
+interface DbEntity extends MetaStructure {
+    _id: string;
 }
 
 class Test { }
@@ -134,14 +138,14 @@ export enum DocType {
     Chapter
 }
 
-export interface IDocument extends MetaStructure {
+export interface IDocument extends DbEntity {
     url: string;
     docType: DocType;
     contents: Chapter | Volume | Collection;
 }
 
-export class Document implements IDocument {
-    id: string;
+export class Document implements Document {
+    _id: string;
     docType: DocType;
     url: string;
     title: string;
@@ -178,7 +182,7 @@ export class Document implements IDocument {
         this.title = title;
 
         if (id) {
-            this.id = id;
+            this._id = id;
         }
 
         if (docType === DocType.Chapter) {

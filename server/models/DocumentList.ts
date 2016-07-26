@@ -1,10 +1,8 @@
-import { ObjectID } from "mongodb";
-
-import { API_SERVER_BASE_URL } from "../utils/constants";
+import { API_SERVER_BASE_URL } from "../common/constants";
 import { DocType } from "./Document";
 
 export interface IDocumentListGroup {
-    _id: ObjectID;
+    _id: string;
     title: string;
     subtitle?: string;
     desc?: string;
@@ -13,8 +11,8 @@ export interface IDocumentListGroup {
 
 export class DocumentListGroup implements IDocumentListGroup {
     static collection = "documentLists";
-    static URL = (id: ObjectID) => API_SERVER_BASE_URL + "/docList/" + id.toHexString();
-    _id: ObjectID;
+    static URL = (id: string) => API_SERVER_BASE_URL + "/docList/" + id;
+    _id: string;
     title: string;
     items: DocumentListItem[];
 }
