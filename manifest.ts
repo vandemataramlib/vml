@@ -32,25 +32,25 @@ const manifest = {
             plugin: "@gar/hapi-json-api",
         },
         {
-            plugin: "./server/api/roots"
+            plugin: "./server/plugins/roots"
         },
         {
-            plugin: "./server/api/documents"
+            plugin: "./server/plugins/documents"
         },
         {
-            plugin: "./server/api/subDocuments"
+            plugin: "./server/plugins/subdocuments"
         },
         {
-            plugin: "./server/api/records"
+            plugin: "./server/plugins/records"
         },
         {
-            plugin: "./server/api/stanzas"
+            plugin: "./server/plugins/stanzas"
         },
         {
-            plugin: "./server/api/prefixes"
+            plugin: "./server/plugins/prefixes"
         },
         {
-            plugin: "./server/api/documentList"
+            plugin: "./server/plugins/documentList"
         },
         {
             plugin: "inert"

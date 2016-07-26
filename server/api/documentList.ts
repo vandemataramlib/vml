@@ -1,6 +1,6 @@
 import * as Hapi from "hapi";
 import * as Joi from "joi";
-import { Db } from "mongodb";
+import { Db, Collection } from "mongodb";
 
 import { getDocumentListSerializer } from "../serializers/documentList";
 import { API_SERVER_BASE_URL } from "../utils/constants";
@@ -12,13 +12,15 @@ interface PreParams {
 }
 
 class DocumentList {
-    options: any;
+    dbCollection: Collection;
 
     static attributes = {
         name: "documentList"
     };
 
     constructor(server: Hapi.Server, options: any, next: Function) {
+
+        server.dependency("hapi-mongodb", this.setDbCollection);
 
         server.route({
             method: "GET",
@@ -34,14 +36,21 @@ class DocumentList {
             }
         });
 
-        next();
+        return next();
+    }
+
+    private setDbCollection = (server: Hapi.Server, next: Function) => {
+
+        const db: Db = server.plugins["hapi-mongodb"].db;
+
+        this.dbCollection = db.collection(DocumentListGroup.collection);
+
+        return next();
     }
 
     private getDocList = (request: Hapi.Request, reply: Hapi.IReply) => {
 
-        const db: Db = request.server.plugins["hapi-mongodb"].db;
-
-        db.collection(DocumentListGroup.collection).find().toArray()
+        this.dbCollection.find().toArray()
             .then(docLists => reply(docLists));
     }
 

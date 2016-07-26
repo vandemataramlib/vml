@@ -10,11 +10,14 @@ export const getChapterSerializer = (type: string, selfURL: string) => {
         attributes: ["title", "url", "contents", "docType"],
         keyForAttribute: "camelCase",
         contents: {
-            attributes: ["stanzas"],
-            stanzas: {
-                attributes: ["lines", "id"],
-                lines: {
-                    attributes: ["line"]
+            attributes: ["segments"],
+            segments: {
+                attributes: ["stanzas"],
+                stanzas: {
+                    attributes: ["lines", "id"],
+                    lines: {
+                        attributes: ["line"]
+                    }
                 }
             }
         }

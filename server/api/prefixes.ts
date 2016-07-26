@@ -1,6 +1,6 @@
 import * as Hapi from "hapi";
 import * as Joi from "joi";
-import { Db, ObjectID } from "mongodb";
+import { Db, ObjectID, Collection } from "mongodb";
 import { Deserializer } from "jsonapi-serializer";
 
 import { HapiPlugin } from "../common/interfaces";
@@ -25,7 +25,7 @@ interface PreParams {
 }
 
 class Prefixes {
-    options: any;
+    dbCollection: Collection;
 
     static attributes = {
         name: "prefixes"
@@ -33,7 +33,7 @@ class Prefixes {
 
     constructor(server: Hapi.Server, options: any, next: Function) {
 
-        this.options = options;
+        server.dependency("hapi-mongodb", this.setDbCollection);
 
         server.route({
             method: "GET",
@@ -199,14 +199,21 @@ class Prefixes {
             }
         });
 
-        next();
+        return next();
+    }
+
+    private setDbCollection = (server: Hapi.Server, next: Function) => {
+
+        const db: Db = server.plugins["hapi-mongodb"].db;
+
+        this.dbCollection = db.collection(Prefix.collection);
+
+        return next();
     }
 
     private getPrefixes = (request: Hapi.Request, reply: Hapi.IReply) => {
 
-        const db: Db = request.server.plugins["hapi-mongodb"].db;
-
-        db.collection(Prefix.collection).find().toArray()
+        this.dbCollection.find().toArray()
             .then(prefixes => reply(prefixes));
     }
 
@@ -238,9 +245,7 @@ class Prefixes {
 
         const params: Params = request.params;
 
-        const db: Db = request.server.plugins["hapi-mongodb"].db;
-
-        db.collection(Prefix.collection).findOne({ _id: new ObjectID(params.id) })
+        this.dbCollection.findOne({ _id: new ObjectID(params.id) })
             .then(prefix => reply(prefix));
     }
 
@@ -281,9 +286,7 @@ class Prefixes {
 
         const preParams: PreParams = request.pre;
 
-        const db: Db = request.server.plugins["hapi-mongodb"].db;
-
-        db.collection(Prefix.collection).insertOne(preParams.newPrefix)
+        this.dbCollection.insertOne(preParams.newPrefix)
             .then(response => reply(response.ops[0]));
     }
 
@@ -298,9 +301,7 @@ class Prefixes {
 
         const params: Params = request.params;
 
-        const db: Db = request.server.plugins["hapi-mongodb"].db;
-
-        db.collection(Prefix.collection).findOneAndDelete({ _id: new ObjectID(params.id) })
+        this.dbCollection.findOneAndDelete({ _id: new ObjectID(params.id) })
             .then(response => reply({}));
     }
 
@@ -308,13 +309,11 @@ class Prefixes {
 
         const params: Params = request.params;
 
-        const db: Db = request.server.plugins["hapi-mongodb"].db;
-
         new Deserializer().deserialize(request.payload)
             .then(updatedPrefix => {
 
                 const prefix = new Prefix(updatedPrefix);
-                return db.collection(Prefix.collection).findOneAndReplace({ _id: new ObjectID(params.id) }, prefix, { returnOriginal: false });
+                return this.dbCollection.findOneAndReplace({ _id: new ObjectID(params.id) }, prefix, { returnOriginal: false });
             })
             .then(response => reply(response.value));
     }

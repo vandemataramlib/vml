@@ -7,8 +7,12 @@ Composer((err: Error, server: Hapi.Server) => {
         throw err;
     }
 
-    server.start(() => {
+    server.start((err) => {
 
-        console.log("Started the plot device on port " + server.info.port);
+        if (err) {
+            throw err;
+        }
+
+        console.log("Server started on port", server.info.port);
     });
 });
