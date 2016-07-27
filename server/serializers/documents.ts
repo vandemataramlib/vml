@@ -1,6 +1,6 @@
 import { Serializer } from "jsonapi-serializer";
 
-export const getChapterSerializer = (type: string, selfURL: string) => {
+export const getChapterSerializer = (type: string, selfURL?: string) => {
 
     const serializer = {
         topLevelLinks: {

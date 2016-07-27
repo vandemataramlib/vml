@@ -27,7 +27,12 @@ export class SubdocumentsController implements Controller {
 
         let documentSerializer: any;
 
-        if (preParams.subdocument.docType === DocType.Chapter) {
+        if (preParams.subdocument) {
+            if (preParams.subdocument.docType === DocType.Chapter) {
+                documentSerializer = getChapterSerializer("subdocuments", Document.subdocumentURL(params.slug, params.subdocId));
+            }
+        }
+        else {
             documentSerializer = getChapterSerializer("subdocuments", Document.subdocumentURL(params.slug, params.subdocId));
         }
 

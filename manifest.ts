@@ -1,14 +1,10 @@
 import * as Confidence from "confidence";
-import * as HapiJSONAPI from "@gar/hapi-json-api";
-// import * as HapiSwagger from "hapi-swagger";
 
 const Config = require("./config");
-
 
 const criteria = {
     env: process.env.NODE_ENV
 };
-
 
 const manifest = {
     $meta: "This file defines the plot device.",
@@ -53,6 +49,9 @@ const manifest = {
             plugin: "./server/plugins/documentList"
         },
         {
+            plugin: "./server/plugins/suffixes"
+        },
+        {
             plugin: "inert"
         },
         {
@@ -62,7 +61,7 @@ const manifest = {
             plugin: {
                 register: "hapi-mongodb",
                 options: {
-                    "url": "mongodb://localhost:27017/vml"
+                    "url": Config.get("/db/address") + Config.get("/db/name")
                 }
             }
         },
@@ -92,6 +91,10 @@ const manifest = {
                             description: "Prefixes API"
                         },
                         {
+                            name: "suffixes",
+                            description: "Suffixes API"
+                        },
+                        {
                             name: "docList",
                             description: "Document List API"
                         }
@@ -102,15 +105,12 @@ const manifest = {
     ]
 };
 
-
 const store = new Confidence.Store(manifest);
-
 
 exports.get = function (key: string) {
 
     return store.get(key, criteria);
 };
-
 
 exports.meta = function (key: string) {
 

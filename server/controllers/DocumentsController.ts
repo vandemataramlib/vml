@@ -27,7 +27,12 @@ export class DocumentsController implements Controller {
 
         let documentSerializer: any;
 
-        if (preParams.document.docType === DocType.Chapter) {
+        if (preParams.document) {
+            if (preParams.document.docType === DocType.Chapter) {
+                documentSerializer = getChapterSerializer("documents", Document.documentURL(params.slug));
+            }
+        }
+        else {
             documentSerializer = getChapterSerializer("documents", Document.documentURL(params.slug));
         }
 
