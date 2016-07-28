@@ -101,7 +101,7 @@ exports.register = (server: Server, options: any, next: Function) => {
             },
             pre: [
                 {
-                    method: controller.searchSuffixes,
+                    method: controller.getMatchingSuffixes,
                     assign: "suffixes"
                 },
                 {

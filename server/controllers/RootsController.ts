@@ -43,10 +43,10 @@ export class RootsController implements Controller {
 
     getMatchingRoots = (request: Request, reply: IReply) => {
 
-        const preParams: PreParams = request.pre;
         const query: Query = request.query;
 
-        return reply(preParams.roots.filter(root => root.root.startsWith(query.startsWith)));
+        this.dbCollection.find({ root: new RegExp(`^${query.startsWith}`) }).toArray()
+            .then(roots => reply(roots));
     }
 
     getRoot = (request: Request, reply: IReply) => {

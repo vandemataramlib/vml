@@ -69,7 +69,6 @@ exports.register = (server: Server, options: any, next: Function) => {
                 }
             },
             pre: [
-                { method: controller.getRoots, assign: "roots" },
                 { method: controller.getMatchingRoots, assign: "roots" },
                 { method: controller.getSerializedRoots, assign: "serializedRoots" }
             ],

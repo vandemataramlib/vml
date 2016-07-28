@@ -82,10 +82,10 @@ export class PrefixesController implements Controller {
 
     getMatchingPrefixes = (request: Request, reply: IReply) => {
 
-        const preParams: PreParams = request.pre;
         const query: Query = request.query;
 
-        return reply(preParams.prefixes.filter(prefix => prefix.prefix.startsWith(query.startsWith)));
+        this.dbCollection.find({ prefix: new RegExp(`^${query.startsWith}`) }).toArray()
+            .then(prefixes => reply(prefixes));
     }
 
     getPrefixPayload = (request: Request, reply: IReply) => {

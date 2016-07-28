@@ -53,7 +53,7 @@ export class SuffixesController implements Controller {
             .then(suffix => suffix ? reply(suffix) : reply(null));
     }
 
-    searchSuffixes = (request: Request, reply: IReply) => {
+    getMatchingSuffixes = (request: Request, reply: IReply) => {
 
         const query: Query = request.query;
 

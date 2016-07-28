@@ -187,7 +187,6 @@ exports.register = (server: Server, options: any, next: Function) => {
                 }
             },
             pre: [
-                { method: controller.getPrefixes, assign: "prefixes" },
                 { method: controller.getMatchingPrefixes, assign: "prefixes" },
                 { method: controller.getSerializedPrefixes, assign: "serializedPrefixes" }
             ],
