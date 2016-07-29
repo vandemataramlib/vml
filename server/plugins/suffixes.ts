@@ -1,8 +1,8 @@
 import { Server } from "hapi";
 import * as Joi from "joi";
+import { Models } from "vml-common";
 
 import { SuffixesController } from "../controllers/SuffixesController";
-import { ISuffix } from "../models/Suffix";
 
 export interface Params {
     id?: string;
@@ -13,8 +13,8 @@ export interface Query {
 }
 
 export interface PreParams {
-    suffixes?: ISuffix[];
-    suffix?: ISuffix;
+    suffixes?: Models.ISuffix[];
+    suffix?: Models.ISuffix;
     serializedSuffixes?: any;
     serializedSuffix?: any;
 }

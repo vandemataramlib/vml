@@ -1,12 +1,11 @@
 import { Request, IReply } from "hapi";
 import { Db, Collection, ObjectID } from "mongodb";
 import { Deserializer } from "jsonapi-serializer";
+import { Constants, Models } from "vml-common";
 
 import { Controller } from "../common/interfaces";
-import { Prefix } from "../models/Prefix";
 import { getPrefixSerializer } from "../serializers/prefixes";
 import { Params, Query, PreParams } from "../plugins/prefixes";
-import { API_SERVER_BASE_URL } from "../common/constants";
 
 export class PrefixesController implements Controller {
     private dbCollection: Collection;
@@ -19,7 +18,7 @@ export class PrefixesController implements Controller {
 
     useDb = (db: Db) => {
 
-        this.dbCollection = db.collection(Prefix.collection);
+        this.dbCollection = db.collection(Models.Prefix.collection);
     }
 
     getPrefixes = (request: Request, reply: IReply) => {
@@ -32,11 +31,11 @@ export class PrefixesController implements Controller {
         const preParams: PreParams = request.pre;
 
         const topLevelLinks = {
-            self: () => API_SERVER_BASE_URL + request.url.path
+            self: () => Constants.API_SERVER_BASE_URL + request.url.path
         };
 
         const dataLinks = {
-            self: (prefix: Prefix) => Prefix.URL(prefix._id)
+            self: (prefix: Models.Prefix) => Models.Prefix.URL(prefix._id)
         };
 
         const serializer = getPrefixSerializer("prefixes", topLevelLinks, dataLinks);
@@ -63,7 +62,7 @@ export class PrefixesController implements Controller {
         const preParams: PreParams = request.pre;
 
         const topLevelLinks = {
-            self: () => API_SERVER_BASE_URL + request.url.path
+            self: () => Constants.API_SERVER_BASE_URL + request.url.path
         };
 
         const serializer = getPrefixSerializer("prefixes");
@@ -102,7 +101,7 @@ export class PrefixesController implements Controller {
 
         const preParams: PreParams = request.pre;
 
-        return reply(preParams.serializedPrefix).created(Prefix.URL(preParams.serializedPrefix.data.id));
+        return reply(preParams.serializedPrefix).created(Models.Prefix.URL(preParams.serializedPrefix.data.id));
     }
 
     deletePrefix = (request: Request, reply: IReply) => {
@@ -120,7 +119,7 @@ export class PrefixesController implements Controller {
         this.deserializer.deserialize(request.payload)
             .then(updatedPrefix => {
 
-                const prefix = new Prefix(updatedPrefix);
+                const prefix = new Models.Prefix(updatedPrefix);
                 return this.dbCollection.findOneAndReplace({ _id: new ObjectID(params.id) }, prefix, { returnOriginal: false });
             })
             .then(response => reply(response.value));

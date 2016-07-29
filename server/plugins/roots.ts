@@ -1,7 +1,7 @@
 import { Server } from "hapi";
 import * as Joi from "joi";
+import { Models } from "vml-common";
 
-import { Root } from "../models/Root";
 import { RootsController } from "../controllers/RootsController";
 
 export interface Params {
@@ -13,9 +13,9 @@ export interface Query {
 }
 
 export interface PreParams {
-    roots?: Root[];
+    roots?: Models.Root[];
     serializedRoots?: any;
-    root?: Root;
+    root?: Models.Root;
     serializedRoot?: any;
 }
 

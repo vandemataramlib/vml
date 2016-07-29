@@ -1,11 +1,11 @@
 import { Server } from "hapi";
 import * as Joi from "joi";
+import { Models } from "vml-common";
 
-import { IDocument } from "../models/Document";
 import { DocumentsController } from "../controllers/DocumentsController";
 
 export interface PreParams {
-    document?: IDocument;
+    document?: Models.IDocument;
     serializedDocument?: any;
 }
 

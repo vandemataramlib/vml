@@ -3,3 +3,4 @@ test/artifacts/*
 build
 .vscode
 typings
+.env

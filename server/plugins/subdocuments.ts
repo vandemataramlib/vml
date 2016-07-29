@@ -1,8 +1,8 @@
 import { Server } from "hapi";
 import * as Joi from "joi";
+import { Models } from "vml-common";
 
 import { SubdocumentsController } from "../controllers/SubdocumentsController";
-import { IDocument } from "../models/Document";
 
 export interface Params {
     slug?: string;
@@ -10,7 +10,7 @@ export interface Params {
 }
 
 export interface PreParams {
-    subdocument?: IDocument;
+    subdocument?: Models.IDocument;
     serializedSubdocument?: any;
 }
 

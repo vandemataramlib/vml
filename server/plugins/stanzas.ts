@@ -1,7 +1,7 @@
 import { Server } from "hapi";
 import * as Joi from "joi";
+import { Models } from "vml-common";
 
-import { Document, Stanza } from "../models/Document";
 import { StanzaController } from "../controllers/StanzasController";
 
 export interface Params {
@@ -12,10 +12,10 @@ export interface Params {
 }
 
 export interface PreParams {
-    document?: Document;
-    stanza?: Stanza;
+    document?: Models.Document;
+    stanza?: Models.Stanza;
     serializedStanza?: any;
-    deserializedPayload?: Stanza;
+    deserializedPayload?: Models.Stanza;
 }
 
 interface Internals {

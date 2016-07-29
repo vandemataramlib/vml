@@ -1,18 +1,17 @@
 import { Request, IReply } from "hapi";
 import { Db, ObjectID, Collection } from "mongodb";
+import { Constants, Models } from "vml-common";
 
 import { Controller } from "../common/interfaces";
-import { Root } from "../models/Root";
 import { Params, Query, PreParams } from "../plugins/roots";
 import { getRootSerializer } from "../serializers/roots";
-import { API_SERVER_BASE_URL } from "../common/constants";
 
 export class RootsController implements Controller {
     private dbCollection: Collection;
 
     useDb = (db: Db) => {
 
-        this.dbCollection = db.collection(Root.collection);
+        this.dbCollection = db.collection(Models.Root.collection);
     }
 
     getRoots = (request: Request, reply: IReply) => {
@@ -24,10 +23,10 @@ export class RootsController implements Controller {
 
         const preParams: PreParams = request.pre;
         const topLevelLinks = {
-            self: () => API_SERVER_BASE_URL + request.url.path
+            self: () => Constants.API_SERVER_BASE_URL + request.url.path
         };
         const dataLinks = {
-            self: (root: Root) => Root.URL(root._id)
+            self: (root: Models.Root) => Models.Root.URL(root._id)
         };
 
         return reply(getRootSerializer("roots", topLevelLinks, dataLinks).serialize(preParams.roots));
@@ -64,7 +63,7 @@ export class RootsController implements Controller {
 
         if (root) {
             topLevelLinks = {};
-            topLevelLinks.self = Root.URL(root._id);
+            topLevelLinks.self = Models.Root.URL(root._id);
         }
 
         const rootSerializer = getRootSerializer("root", topLevelLinks);

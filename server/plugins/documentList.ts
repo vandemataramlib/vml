@@ -1,11 +1,11 @@
 import { Server } from "hapi";
 import * as Joi from "joi";
+import { Models } from "vml-common";
 
 import { DocumentListsController } from "../controllers/DocumentListsController";
-import { IDocumentListGroup } from "../models/DocumentList";
 
 export interface PreParams {
-    docList?: IDocumentListGroup[];
+    docList?: Models.IDocumentListGroup[];
     serialisedDocList?: any;
 }
 

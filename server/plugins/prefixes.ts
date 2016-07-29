@@ -1,8 +1,8 @@
 import { Server } from "hapi";
 import * as Joi from "joi";
+import { Models } from "vml-common";
 
 import { PrefixesController } from "../controllers/PrefixesController";
-import { Prefix } from "../models/Prefix";
 
 export interface Params {
     id?: string;
@@ -13,11 +13,11 @@ export interface Query {
 }
 
 export interface PreParams {
-    prefixes?: Prefix[];
-    prefix?: Prefix;
+    prefixes?: Models.Prefix[];
+    prefix?: Models.Prefix;
     serializedPrefixes?: any;
     serializedPrefix?: any;
-    newPrefix?: Prefix;
+    newPrefix?: Models.Prefix;
 }
 
 exports.register = (server: Server, options: any, next: Function) => {

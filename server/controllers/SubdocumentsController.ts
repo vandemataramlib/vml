@@ -1,8 +1,8 @@
 import { Request, IReply } from "hapi";
 import { Db, Collection } from "mongodb";
+import { Models } from "vml-common";
 
 import { Controller } from "../common/interfaces";
-import { Document, DocType } from "../models/Document";
 import { Params, PreParams } from "../plugins/subdocuments";
 import { getChapterSerializer } from "../serializers/documents";
 
@@ -11,7 +11,7 @@ export class SubdocumentsController implements Controller {
 
     useDb = (db: Db) => {
 
-        this.dbCollection = db.collection(Document.collection);
+        this.dbCollection = db.collection(Models.Document.collection);
     }
 
     getSubdocument = (request: Request, reply: IReply) => {
@@ -27,12 +27,12 @@ export class SubdocumentsController implements Controller {
         let documentSerializer: any;
 
         if (preParams.subdocument) {
-            if (preParams.subdocument.docType === DocType.Chapter) {
-                documentSerializer = getChapterSerializer("subdocuments", Document.subdocumentURL(params.slug, params.subdocId));
+            if (preParams.subdocument.docType === Models.DocType.Chapter) {
+                documentSerializer = getChapterSerializer("subdocuments", Models.Document.URL(params.slug, params.subdocId));
             }
         }
         else {
-            documentSerializer = getChapterSerializer("subdocuments", Document.subdocumentURL(params.slug, params.subdocId));
+            documentSerializer = getChapterSerializer("subdocuments", Models.Document.URL(params.slug, params.subdocId));
         }
 
         return reply(documentSerializer.serialize(preParams.subdocument));

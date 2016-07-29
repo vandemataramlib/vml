@@ -1,7 +1,7 @@
 import { Server } from "hapi";
 import * as Joi from "joi";
+import { Models } from "vml-common";
 
-import { IDocument } from "../models/Document";
 import { RecordsController } from "../controllers/RecordsController";
 
 export interface Params {
@@ -11,7 +11,7 @@ export interface Params {
 }
 
 export interface PreParams {
-    record?: IDocument;
+    record?: Models.IDocument;
     serialisedRecord?: any;
 }
 

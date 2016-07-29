@@ -1,10 +1,9 @@
 import { Request, IReply } from "hapi";
 import { Db, Collection } from "mongodb";
+import { Models, Constants } from "vml-common";
 
 import { Controller } from "../common/interfaces";
-import { DocumentListGroup, IDocumentListGroup } from "../models/DocumentList";
 import { PreParams } from "../plugins/documentList";
-import { API_SERVER_BASE_URL } from "../common/constants";
 import { getDocumentListSerializer } from "../serializers/documentList";
 
 export class DocumentListsController implements Controller {
@@ -12,7 +11,7 @@ export class DocumentListsController implements Controller {
 
     useDb = (db: Db) => {
 
-        this.dbCollection = db.collection(DocumentListGroup.collection);
+        this.dbCollection = db.collection(Models.DocumentListGroup.collection);
     };
 
     getDocList = (request: Request, reply: IReply) => {
@@ -26,11 +25,11 @@ export class DocumentListsController implements Controller {
         const preParams: PreParams = request.pre;
 
         const topLevelLinks = {
-            self: API_SERVER_BASE_URL + request.url.path
+            self: Constants.API_SERVER_BASE_URL + request.url.path
         };
 
         const dataLinks = {
-            self: (documentListGroup: IDocumentListGroup) => DocumentListGroup.URL(documentListGroup._id)
+            self: (documentListGroup: Models.IDocumentListGroup) => Models.DocumentListGroup.URL(documentListGroup._id)
         };
 
         const serializer = getDocumentListSerializer("documentListGroup", topLevelLinks, dataLinks);

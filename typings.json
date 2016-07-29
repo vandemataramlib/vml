@@ -2,6 +2,7 @@
   "globalDependencies": {
     "confidence": "registry:dt/confidence#1.4.2+20160316155526",
     "core-js": "registry:dt/core-js#0.0.0+20160602141332",
+    "dotenv": "registry:dt/dotenv#2.0.0+20160327131627",
     "hapi": "registry:dt/hapi#13.0.0+20160602125023",
     "joi": "registry:dt/joi#9.0.0+20160626220651",
     "node": "registry:dt/node#6.0.0+20160621231320"

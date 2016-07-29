@@ -1,9 +1,9 @@
 import { Request, IReply } from "hapi";
 import { Db, Collection } from "mongodb";
 import { Deserializer } from "jsonapi-serializer";
+import { Models } from "vml-common";
 
 import { Controller } from "../common/interfaces";
-import { Document, Stanza } from "../models/Document";
 import { Params, PreParams } from "../plugins/stanzas";
 import { getStanzaSerializer } from "../serializers/stanzas";
 
@@ -18,7 +18,7 @@ export class StanzaController implements Controller {
 
     useDb = (db: Db) => {
 
-        this.dbCollection = db.collection(Document.collection);
+        this.dbCollection = db.collection(Models.Document.collection);
     }
 
     getStanza = (request: Request, reply: IReply) => {
@@ -66,7 +66,7 @@ export class StanzaController implements Controller {
 
         if (preParams.stanza) {
             topLevelLinks = {
-                self: Stanza.URL(request.params.slug, request.params.subdocId,
+                self: Models.Stanza.URL(request.params.slug, request.params.subdocId,
                     request.params.recordId, request.params.stanzaId)
             };
         }
@@ -90,7 +90,7 @@ export class StanzaController implements Controller {
 
         const documentPath = requestPath.substr(0, requestPath.indexOf("/stanzas"));
 
-        const updatedStanza: Stanza = preParams.deserializedPayload;
+        const updatedStanza: Models.Stanza = preParams.deserializedPayload;
 
         const stanzaKey = `contents.segments.${updatedStanza.segmentId}.stanzas.${updatedStanza.id}`;
 
