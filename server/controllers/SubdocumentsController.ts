@@ -16,8 +16,7 @@ export class SubdocumentsController implements Controller {
 
     getSubdocument = (request: Request, reply: IReply) => {
 
-        this.dbCollection.findOne({ url: request.url.path })
-            .then(record => reply(record));
+        return reply(this.dbCollection.findOne({ url: request.url.path }));
     }
 
     getSerializedSubdocument = (request: Request, reply: IReply) => {

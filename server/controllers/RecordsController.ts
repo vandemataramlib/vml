@@ -16,8 +16,7 @@ export class RecordsController implements Controller {
 
     getRecord = (request: Request, reply: IReply) => {
 
-        this.dbCollection.findOne({ url: request.url.path })
-            .then(record => reply(record));
+        return reply(this.dbCollection.findOne({ url: request.url.path }));
     }
 
     getSerializedRecord = (request: Request, reply: IReply) => {

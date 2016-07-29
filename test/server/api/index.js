@@ -28,27 +28,27 @@ lab.beforeEach((done) => {
 });
 
 
-lab.experiment('Index Plugin', () => {
+// lab.experiment('Index Plugin', () => {
 
-    lab.beforeEach((done) => {
+//     lab.beforeEach((done) => {
 
-        request = {
-            method: 'GET',
-            url: '/'
-        };
+//         request = {
+//             method: 'GET',
+//             url: '/'
+//         };
 
-        done();
-    });
+//         done();
+//     });
 
 
-    lab.test('it returns the default message', (done) => {
+//     lab.test('it returns the default message', (done) => {
 
-        server.inject(request, (response) => {
+//         server.inject(request, (response) => {
 
-            Code.expect(response.result.message).to.match(/welcome to the plot device/i);
-            Code.expect(response.statusCode).to.equal(200);
+//             Code.expect(response.result.message).to.match(/welcome to the plot device/i);
+//             Code.expect(response.statusCode).to.equal(200);
 
-            done();
-        });
-    });
-});
+//             done();
+//         });
+//     });
+// });

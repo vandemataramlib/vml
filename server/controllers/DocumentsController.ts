@@ -16,8 +16,7 @@ export class DocumentsController implements Controller {
 
     getDocument = (request: Request, reply: IReply) => {
 
-        this.dbCollection.find({ url: request.url.path }).limit(1).next()
-            .then(record => reply(record));
+        return reply(this.dbCollection.find({ url: request.url.path }).limit(1).next());
     }
 
     getSerializedDocument = (request: Request, reply: IReply) => {

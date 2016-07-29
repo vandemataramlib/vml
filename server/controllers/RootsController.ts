@@ -17,8 +17,7 @@ export class RootsController implements Controller {
 
     getRoots = (request: Request, reply: IReply) => {
 
-        this.dbCollection.find().toArray()
-            .then(roots => reply(roots));
+        return reply(this.dbCollection.find().toArray());
     }
 
     getSerializedRoots = (request: Request, reply: IReply) => {
@@ -45,16 +44,14 @@ export class RootsController implements Controller {
 
         const query: Query = request.query;
 
-        this.dbCollection.find({ root: new RegExp(`^${query.startsWith}`) }).toArray()
-            .then(roots => reply(roots));
+        return reply(this.dbCollection.find({ root: new RegExp(`^${query.startsWith}`) }).toArray());
     }
 
     getRoot = (request: Request, reply: IReply) => {
 
         const params: Params = request.params;
 
-        this.dbCollection.findOne({ _id: new ObjectID(params.id) })
-            .then(roots => reply(roots));
+        return reply(this.dbCollection.findOne({ _id: new ObjectID(params.id) }));
     }
 
     getSerializedRoot = (request: Request, reply: IReply) => {

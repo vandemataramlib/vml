@@ -17,8 +17,7 @@ export class SuffixesController implements Controller {
 
     getSuffixes = (request: Request, reply: IReply) => {
 
-        this.dbCollection.find().toArray()
-            .then(suffixes => reply(suffixes));
+        return reply(this.dbCollection.find().toArray());
     }
 
     getSerializedSuffixes = (request: Request, reply: IReply) => {
@@ -49,16 +48,14 @@ export class SuffixesController implements Controller {
 
         const params: Params = request.params;
 
-        this.dbCollection.find({ _id: new ObjectID(params.id) }).limit(1).next()
-            .then(suffix => suffix ? reply(suffix) : reply(null));
+        return reply(this.dbCollection.find({ _id: new ObjectID(params.id) }).limit(1).next());
     }
 
     getMatchingSuffixes = (request: Request, reply: IReply) => {
 
         const query: Query = request.query;
 
-        this.dbCollection.find({ suffix: new RegExp(`^${query.startsWith}`) }).toArray()
-            .then(suffixes => reply(suffixes));
+        return reply(this.dbCollection.find({ suffix: new RegExp(`^${query.startsWith}`) }).toArray());
     }
 
     getSerializedSuffix = (request: Request, reply: IReply) => {

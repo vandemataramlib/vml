@@ -24,8 +24,7 @@ export class PrefixesController implements Controller {
 
     getPrefixes = (request: Request, reply: IReply) => {
 
-        this.dbCollection.find().toArray()
-            .then(prefixes => reply(prefixes));
+        return reply(this.dbCollection.find().toArray());
     }
 
     getSerializedPrefixes = (request: Request, reply: IReply) => {
@@ -56,8 +55,7 @@ export class PrefixesController implements Controller {
 
         const params: Params = request.params;
 
-        this.dbCollection.findOne({ _id: new ObjectID(params.id) })
-            .then(prefix => reply(prefix));
+        return reply(this.dbCollection.findOne({ _id: new ObjectID(params.id) }));
     }
 
     getSerializedPrefix = (request: Request, reply: IReply) => {
@@ -84,8 +82,7 @@ export class PrefixesController implements Controller {
 
         const query: Query = request.query;
 
-        this.dbCollection.find({ prefix: new RegExp(`^${query.startsWith}`) }).toArray()
-            .then(prefixes => reply(prefixes));
+        return reply(this.dbCollection.find({ prefix: new RegExp(`^${query.startsWith}`) }).toArray());
     }
 
     getPrefixPayload = (request: Request, reply: IReply) => {

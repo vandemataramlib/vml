@@ -55,7 +55,7 @@ export class StanzaController implements Controller {
 
         const preParams: PreParams = request.pre;
 
-        reply(preParams.serializedStanza);
+        return reply(preParams.serializedStanza);
     }
 
     getSerializedStanza = (request: Request, reply: IReply) => {
@@ -78,8 +78,7 @@ export class StanzaController implements Controller {
 
     deserializePayload = (request: Request, reply: IReply) => {
 
-        this.deserializer.deserialize(request.payload)
-            .then(stanza => reply(stanza));
+        return reply(this.deserializer.deserialize(request.payload));
     }
 
     patchStanza = (request: Request, reply: IReply) => {
