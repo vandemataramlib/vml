@@ -65,7 +65,7 @@ export class PrefixesController implements Controller {
             self: () => Constants.API_SERVER_BASE_URL + request.url.path
         };
 
-        const serializer = getPrefixSerializer("prefixes");
+        const serializer = getPrefixSerializer("prefixes", topLevelLinks);
 
         return reply(serializer.serialize(preParams.prefix));
     }

@@ -12,9 +12,9 @@ export const getChapterSerializer = (type: string, selfURL?: string) => {
         contents: {
             attributes: ["segments"],
             segments: {
-                attributes: ["stanzas"],
+                attributes: ["title", "stanzas"],
                 stanzas: {
-                    attributes: ["lines", "id"],
+                    attributes: ["lines", "id", "runningId"],
                     lines: {
                         attributes: ["line"]
                     }

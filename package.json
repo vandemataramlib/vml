@@ -23,27 +23,27 @@
   },
   "dependencies": {
     "@gar/hapi-json-api": "^2.0.1",
-    "confidence": "3.x.x",
-    "core-js": "^2.4.0",
+    "confidence": "^3.0.1",
+    "core-js": "^2.4.1",
     "dotenv": "^2.0.0",
-    "glue": "3.x.x",
-    "hapi": "13.x.x",
+    "glue": "^3.3.0",
+    "hapi": "^13.x.x",
     "hapi-mongodb": "^6.0.0",
-    "hapi-swagger": "^6.1.0",
-    "hoek": "4.x.x",
+    "hapi-swagger": "^6.2.0",
+    "hoek": "^4.0.2",
     "inert": "^4.0.1",
-    "joi": "^9.0.1",
-    "jsonapi-serializer": "^3.2.1",
-    "mongodb": "^2.2.4",
-    "sanscript": "0.0.2",
+    "joi": "^9.0.4",
+    "jsonapi-serializer": "^3.3.0",
+    "mongodb": "^2.2.5",
+    "sanscript": "^0.0.2",
     "vision": "^4.1.0",
     "vml-common": "https://github.com/vandemataramlib/vml-common.git"
   },
   "devDependencies": {
-    "code": "3.x.x",
-    "lab": "10.x.x",
-    "nodemon": "1.x.x",
-    "tslint": "3.x.x",
-    "typescript": "1.x.x"
+    "code": "^3.0.2",
+    "lab": "^10.9.0",
+    "nodemon": "^1.10.0",
+    "tslint": "^3.14.0",
+    "typescript": "^1.8.10"
   }
 }
