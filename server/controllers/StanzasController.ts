@@ -40,7 +40,7 @@ export class StanzaController implements Controller {
             { $unwind: "$contents.segments.stanzas" },
             {
                 $match: {
-                    "contents.segments.stanzas.runningId": params.stanzaId,
+                    "contents.segments.stanzas.runningId": params.runningId,
                 }
             },
             {
@@ -67,7 +67,7 @@ export class StanzaController implements Controller {
         if (preParams.stanza) {
             topLevelLinks = {
                 self: Models.Stanza.URL(request.params.slug, request.params.subdocId,
-                    request.params.recordId, request.params.stanzaId)
+                    request.params.recordId, request.params.runningId)
             };
         }
 
@@ -84,7 +84,6 @@ export class StanzaController implements Controller {
     patchStanza = (request: Request, reply: IReply) => {
 
         const preParams: PreParams = request.pre;
-        const params: Params = request.params;
 
         const requestPath = request.url.path;
 

@@ -8,7 +8,7 @@ export interface Params {
     slug?: string;
     subdocId?: string;
     recordId?: string;
-    stanzaId?: string;
+    runningId?: string;
 }
 
 export interface PreParams {
@@ -27,7 +27,7 @@ let internals = <Internals>{};
 internals.stanzaPayloadSchema = {
     data: Joi.object().required().keys({
         type: Joi.string().required().default("stanzas"),
-        id: Joi.string().required().default("id"),
+        id: Joi.number().required().default("id"),
         attributes: Joi.object().required().keys({
             lines: Joi.array().required().description("the lines comprising the stanza").items(
                 Joi.object().keys({
@@ -61,11 +61,11 @@ exports.register = (server: Server, options: any, next: Function) => {
     });
 
     server.route({
-        path: "/docs/{slug}/subdocs/{subdocId}/records/{recordId}/stanzas/{stanzaId}",
+        path: "/docs/{slug}/subdocs/{subdocId}/records/{recordId}/stanzas/{runningId}",
         method: "GET",
         config: {
             description: "Get a stanza from a record",
-            notes: "Returns a stanza by the document slug, subdocId, recordId and stanzaId passed in the path",
+            notes: "Returns a stanza by the document slug, subdocId, recordId and runningId passed in the path",
             tags: ["api"],
             plugins: {
                 "hapi-swagger": {
@@ -83,7 +83,7 @@ exports.register = (server: Server, options: any, next: Function) => {
                     recordId: Joi.string()
                         .required()
                         .description("the id for the record"),
-                    stanzaId: Joi.string()
+                    runningId: Joi.string()
                         .required()
                         .description("the id of the stanza")
                 }
@@ -103,11 +103,11 @@ exports.register = (server: Server, options: any, next: Function) => {
     });
 
     server.route({
-        path: "/docs/{slug}/stanzas/{stanzaId}",
+        path: "/docs/{slug}/stanzas/{runningId}",
         method: "GET",
         config: {
             description: "Get a stanza from a document",
-            notes: "Returns a stanza by the document slug and stanzaId passed in the path",
+            notes: "Returns a stanza by the document slug and runningId passed in the path",
             tags: ["api"],
             plugins: {
                 "hapi-swagger": {
@@ -119,7 +119,7 @@ exports.register = (server: Server, options: any, next: Function) => {
                     slug: Joi.string()
                         .required()
                         .description("the slug for the document"),
-                    stanzaId: Joi.string()
+                    runningId: Joi.string()
                         .required()
                         .description("the id of the stanza")
                 }
@@ -139,7 +139,7 @@ exports.register = (server: Server, options: any, next: Function) => {
     });
 
     server.route({
-        path: "/docs/{slug}/stanzas/{stanzaId}",
+        path: "/docs/{slug}/stanzas/{runningId}",
         method: "PATCH",
         config: {
             description: "Update a stanza in a document",
@@ -155,9 +155,9 @@ exports.register = (server: Server, options: any, next: Function) => {
                     slug: Joi.string()
                         .required()
                         .description("the slug for the document"),
-                    stanzaId: Joi.string()
+                    runningId: Joi.string()
                         .required()
-                        .description("the id of the stanza")
+                        .description("the runningId of the stanza")
                 },
                 payload: internals.stanzaPayloadSchema
             },
@@ -184,11 +184,11 @@ exports.register = (server: Server, options: any, next: Function) => {
     });
 
     server.route({
-        path: "/docs/{slug}/subdocs/{subdocId}/stanzas/{stanzaId}",
+        path: "/docs/{slug}/subdocs/{subdocId}/stanzas/{runningId}",
         method: "GET",
         config: {
             description: "Get a stanza from a subdocument",
-            notes: "Returns a stanza by the document slug, subdocId and stanzaId passed in the path",
+            notes: "Returns a stanza by the document slug, subdocId and runningId passed in the path",
             tags: ["api"],
             plugins: {
                 "hapi-swagger": {
@@ -203,7 +203,7 @@ exports.register = (server: Server, options: any, next: Function) => {
                     subdocId: Joi.string()
                         .required()
                         .description("the id for the subdocument"),
-                    stanzaId: Joi.string()
+                    runningId: Joi.string()
                         .required()
                         .description("the id of the stanza")
                 }
