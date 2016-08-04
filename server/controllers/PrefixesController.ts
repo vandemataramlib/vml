@@ -1,10 +1,9 @@
 import { Request, IReply } from "hapi";
 import { Db, Collection, ObjectID } from "mongodb";
 import { Deserializer } from "jsonapi-serializer";
-import { Constants, Models } from "vml-common";
+import { Constants, Models, Serializers } from "vml-common";
 
 import { Controller } from "../common/interfaces";
-import { getPrefixSerializer } from "../serializers/prefixes";
 import { Params, Query, PreParams } from "../plugins/prefixes";
 
 export class PrefixesController implements Controller {
@@ -38,7 +37,7 @@ export class PrefixesController implements Controller {
             self: (prefix: Models.Prefix) => Models.Prefix.URL(prefix._id)
         };
 
-        const serializer = getPrefixSerializer("prefixes", topLevelLinks, dataLinks);
+        const serializer = Serializers.getPrefixSerializer("prefixes", topLevelLinks, dataLinks);
 
         return reply(serializer.serialize(preParams.prefixes));
     }
@@ -65,7 +64,7 @@ export class PrefixesController implements Controller {
             self: () => Constants.API_SERVER_BASE_URL + request.url.path
         };
 
-        const serializer = getPrefixSerializer("prefixes", topLevelLinks);
+        const serializer = Serializers.getPrefixSerializer("prefixes", topLevelLinks);
 
         return reply(serializer.serialize(preParams.prefix));
     }

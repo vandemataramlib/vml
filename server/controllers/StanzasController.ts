@@ -1,11 +1,10 @@
 import { Request, IReply } from "hapi";
 import { Db, Collection } from "mongodb";
 import { Deserializer } from "jsonapi-serializer";
-import { Models } from "vml-common";
+import { Models, Serializers } from "vml-common";
 
 import { Controller } from "../common/interfaces";
 import { Params, PreParams } from "../plugins/stanzas";
-import { getStanzaSerializer } from "../serializers/stanzas";
 
 export class StanzaController implements Controller {
     private dbCollection: Collection;
@@ -71,7 +70,7 @@ export class StanzaController implements Controller {
             };
         }
 
-        const stanzaSerializer = getStanzaSerializer("stanzas", topLevelLinks);
+        const stanzaSerializer = Serializers.getStanzaSerializer("stanzas", topLevelLinks);
 
         return reply(stanzaSerializer.serialize(preParams.stanza));
     }

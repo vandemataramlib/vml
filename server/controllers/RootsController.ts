@@ -1,10 +1,9 @@
 import { Request, IReply } from "hapi";
 import { Db, ObjectID, Collection } from "mongodb";
-import { Constants, Models } from "vml-common";
+import { Constants, Models, Serializers } from "vml-common";
 
 import { Controller } from "../common/interfaces";
 import { Params, Query, PreParams } from "../plugins/roots";
-import { getRootSerializer } from "../serializers/roots";
 
 export class RootsController implements Controller {
     private dbCollection: Collection;
@@ -29,7 +28,7 @@ export class RootsController implements Controller {
             self: (root: Models.Root) => Models.Root.URL(root._id)
         };
 
-        return reply(getRootSerializer("roots", topLevelLinks, dataLinks).serialize(preParams.roots));
+        return reply(Serializers.getRootSerializer("roots", topLevelLinks, dataLinks).serialize(preParams.roots));
     }
 
     sendRoots = (request: Request, reply: IReply) => {
@@ -66,7 +65,7 @@ export class RootsController implements Controller {
             topLevelLinks.self = Models.Root.URL(root._id);
         }
 
-        const rootSerializer = getRootSerializer("root", topLevelLinks);
+        const rootSerializer = Serializers.getRootSerializer("root", topLevelLinks);
 
         return reply(rootSerializer.serialize(preParams.root));
     }

@@ -1,10 +1,9 @@
 import { Request, IReply } from "hapi";
 import { Db, Collection, ObjectID } from "mongodb";
-import { Models, Constants } from "vml-common";
+import { Models, Constants, Serializers } from "vml-common";
 
 import { Controller } from "../common/interfaces";
 import { Params, Query, PreParams } from "../plugins/suffixes";
-import { getSuffixSerializer } from "../serializers/suffixes";
 
 export class SuffixesController implements Controller {
     private dbCollection: Collection;
@@ -31,7 +30,7 @@ export class SuffixesController implements Controller {
             self: (suffix: Models.Suffix) => Models.Suffix.URL(suffix._id)
         };
 
-        const serializer = getSuffixSerializer("suffixes", topLevelLinks, dataLinks);
+        const serializer = Serializers.getSuffixSerializer("suffixes", topLevelLinks, dataLinks);
 
         return reply(serializer.serialize(preParams.suffixes));
     }
@@ -65,7 +64,7 @@ export class SuffixesController implements Controller {
             self: () => Constants.API_SERVER_BASE_URL + request.url.path
         };
 
-        const serializer = getSuffixSerializer("suffixes", topLevelLinks);
+        const serializer = Serializers.getSuffixSerializer("suffixes", topLevelLinks);
 
         return reply(serializer.serialize(preParams.suffix));
     }
