@@ -44,9 +44,10 @@ internals.stanzaPayloadSchema = {
                     )
                 }).options({ allowUnknown: true })
             ),
-            analysis: Joi.alternatives().try(Joi.array().description("the stanza's analysis"), null)
+            analysis: Joi.array().description("the stanza's analysis")
         }).options({ allowUnknown: true })
-    })
+    }),
+    links: Joi.object()
 };
 
 exports.register = (server: Server, options: any, next: Function) => {
