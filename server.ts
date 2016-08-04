@@ -1,5 +1,5 @@
 import * as Hapi from "hapi";
-const Composer = require("./index");
+const Composer = require("./src/config");
 
 Composer((err: Error, server: Hapi.Server) => {
 

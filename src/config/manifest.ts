@@ -28,28 +28,28 @@ const manifest = {
             plugin: "@gar/hapi-json-api",
         },
         {
-            plugin: "./src/plugins/roots"
+            plugin: "../plugins/roots"
         },
         {
-            plugin: "./src/plugins/documents"
+            plugin: "../plugins/documents"
         },
         {
-            plugin: "./src/plugins/subdocuments"
+            plugin: "../plugins/subdocuments"
         },
         {
-            plugin: "./src/plugins/records"
+            plugin: "../plugins/records"
         },
         {
-            plugin: "./src/plugins/stanzas"
+            plugin: "../plugins/stanzas"
         },
         {
-            plugin: "./src/plugins/prefixes"
+            plugin: "../plugins/prefixes"
         },
         {
-            plugin: "./src/plugins/documentList"
+            plugin: "../plugins/documentList"
         },
         {
-            plugin: "./src/plugins/suffixes"
+            plugin: "../plugins/suffixes"
         },
         {
             plugin: "inert"

@@ -2,7 +2,7 @@
 
 const Lab = require('lab');
 const Code = require('code');
-const Manifest = require('../build/manifest');
+const Manifest = require('../build/src/config/manifest');
 
 
 const lab = exports.lab = Lab.script();

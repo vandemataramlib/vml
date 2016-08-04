@@ -2,7 +2,7 @@
 
 const Lab = require('lab');
 const Code = require('code');
-const Composer = require('../build/index');
+const Composer = require('../build/src/config');
 
 
 const lab = exports.lab = Lab.script();

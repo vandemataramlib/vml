@@ -2,7 +2,7 @@
 
 const Lab = require('lab');
 const Code = require('code');
-const Config = require('../build/config');
+const Config = require('../build/src/config/config');
 
 
 const lab = exports.lab = Lab.script();

@@ -2,9 +2,9 @@
 
 const Lab = require('lab');
 const Code = require('code');
-const Config = require('../../../build/config');
+const Config = require('../../../build/src/config/config');
 const Hapi = require('hapi');
-const IndexPlugin = require('../../../build/server/api/index');
+const IndexPlugin = require('../../../build/src/plugins/documents');
 
 
 const lab = exports.lab = Lab.script();

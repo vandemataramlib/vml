@@ -2,7 +2,7 @@
   "name": "vml",
   "version": "1.0.0",
   "description": "API server for Vande Mataram Library",
-  "main": "index.js",
+  "private": true,
   "scripts": {
     "start": "tsc -w & nodemon --delay 1 -r dotenv/config build/server.js",
     "test": "lab -c",
