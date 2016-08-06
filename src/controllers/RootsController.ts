@@ -25,7 +25,7 @@ export class RootsController implements Controller {
             self: () => Constants.API_SERVER_BASE_URL + request.url.path
         };
         const dataLinks = {
-            self: (root: Models.Root) => Models.Root.URL(root._id)
+            self: (root: Models.Root) => Constants.API_SERVER_BASE_URL + Models.Root.URL(root._id)
         };
 
         return reply(Serializers.getRootSerializer("roots", topLevelLinks, dataLinks).serialize(preParams.roots));
@@ -62,7 +62,7 @@ export class RootsController implements Controller {
 
         if (root) {
             topLevelLinks = {};
-            topLevelLinks.self = Models.Root.URL(root._id);
+            topLevelLinks.self = Constants.API_SERVER_BASE_URL + Models.Root.URL(root._id);
         }
 
         const rootSerializer = Serializers.getRootSerializer("root", topLevelLinks);

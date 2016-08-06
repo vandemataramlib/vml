@@ -28,7 +28,7 @@ export class DocumentListsController implements Controller {
         };
 
         const dataLinks = {
-            self: (documentListGroup: Models.IDocumentListGroup) => Models.DocumentListGroup.URL(documentListGroup._id)
+            self: (documentListGroup: Models.IDocumentListGroup) => Constants.API_SERVER_BASE_URL + Models.DocumentListGroup.URL(documentListGroup._id)
         };
 
         const serializer = Serializers.getDocumentListSerializer("documentListGroup", topLevelLinks, dataLinks);

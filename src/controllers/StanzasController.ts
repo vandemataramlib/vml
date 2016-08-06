@@ -1,7 +1,7 @@
 import { Request, IReply } from "hapi";
 import { Db, Collection } from "mongodb";
 import { Deserializer } from "jsonapi-serializer";
-import { Models, Serializers } from "vml-common";
+import { Models, Serializers, Constants } from "vml-common";
 
 import { Controller } from "../common/interfaces";
 import { Params, PreParams } from "../plugins/stanzas";
@@ -65,7 +65,7 @@ export class StanzaController implements Controller {
 
         if (preParams.stanza) {
             topLevelLinks = {
-                self: Models.Stanza.URL(request.params.slug, request.params.subdocId,
+                self: Constants.API_SERVER_BASE_URL + Models.Stanza.URL(request.params.slug, request.params.subdocId,
                     request.params.recordId, request.params.runningId)
             };
         }

@@ -27,7 +27,7 @@ export class SuffixesController implements Controller {
         };
 
         const dataLinks = {
-            self: (suffix: Models.Suffix) => Models.Suffix.URL(suffix._id)
+            self: (suffix: Models.Suffix) => Constants.API_SERVER_BASE_URL + Models.Suffix.URL(suffix._id)
         };
 
         const serializer = Serializers.getSuffixSerializer("suffixes", topLevelLinks, dataLinks);

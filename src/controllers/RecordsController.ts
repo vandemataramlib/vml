@@ -1,6 +1,6 @@
 import { Request, IReply } from "hapi";
 import { Db, Collection } from "mongodb";
-import { Models, Serializers } from "vml-common";
+import { Models, Serializers, Constants } from "vml-common";
 
 import { Controller } from "../common/interfaces";
 import { Params, PreParams } from "../plugins/records";
@@ -23,7 +23,9 @@ export class RecordsController implements Controller {
         const params: Params = request.params;
         const preParams: PreParams = request.pre;
 
-        const recordSerializer = Serializers.getChapterSerializer("records", Models.Document.URL(params.slug, params.subdocId, params.recordId));
+        const url = Constants.API_SERVER_BASE_URL + Models.Document.URL(params.slug, params.subdocId);
+
+        const recordSerializer = Serializers.getChapterSerializer("records", url);
 
         return reply(recordSerializer.serialize(preParams.record));
     }

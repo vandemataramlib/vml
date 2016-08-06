@@ -34,7 +34,7 @@ export class PrefixesController implements Controller {
         };
 
         const dataLinks = {
-            self: (prefix: Models.Prefix) => Models.Prefix.URL(prefix._id)
+            self: (prefix: Models.Prefix) => Constants.API_SERVER_BASE_URL + Models.Prefix.URL(prefix._id)
         };
 
         const serializer = Serializers.getPrefixSerializer("prefixes", topLevelLinks, dataLinks);
@@ -100,7 +100,9 @@ export class PrefixesController implements Controller {
 
         const preParams: PreParams = request.pre;
 
-        return reply(preParams.serializedPrefix).created(Models.Prefix.URL(preParams.serializedPrefix.data.id));
+        const url = Constants.API_SERVER_BASE_URL + Models.Prefix.URL(preParams.serializedPrefix.data.id);
+
+        return reply(preParams.serializedPrefix).created(url);
     }
 
     deletePrefix = (request: Request, reply: IReply) => {

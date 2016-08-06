@@ -1,6 +1,6 @@
 import { Request, IReply } from "hapi";
 import { Db, Collection } from "mongodb";
-import { Models, Serializers } from "vml-common";
+import { Models, Serializers, Constants } from "vml-common";
 
 import { Controller } from "../common/interfaces";
 import { Params, PreParams } from "../plugins/subdocuments";
@@ -27,11 +27,13 @@ export class SubdocumentsController implements Controller {
 
         if (preParams.subdocument) {
             if (preParams.subdocument.docType === Models.DocType.Chapter) {
-                documentSerializer = Serializers.getChapterSerializer("subdocuments", Models.Document.URL(params.slug, params.subdocId));
+                const url = Constants.API_SERVER_BASE_URL + Models.Document.URL(params.slug, params.subdocId);
+                documentSerializer = Serializers.getChapterSerializer("subdocuments", url);
             }
         }
         else {
-            documentSerializer = Serializers.getChapterSerializer("subdocuments", Models.Document.URL(params.slug, params.subdocId));
+            const url = Constants.API_SERVER_BASE_URL + Models.Document.URL(params.slug, params.subdocId);
+            documentSerializer = Serializers.getChapterSerializer("subdocuments", url);
         }
 
         return reply(documentSerializer.serialize(preParams.subdocument));
