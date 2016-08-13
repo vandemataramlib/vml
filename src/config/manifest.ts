@@ -52,6 +52,9 @@ const manifest = {
             plugin: "../plugins/suffixes"
         },
         {
+            plugin: "../plugins/collections"
+        },
+        {
             plugin: "inert"
         },
         {
@@ -93,6 +96,10 @@ const manifest = {
                         {
                             name: "suffixes",
                             description: "Suffixes API"
+                        },
+                        {
+                            name: "collections",
+                            description: "Collections API"
                         },
                         {
                             name: "docList",
