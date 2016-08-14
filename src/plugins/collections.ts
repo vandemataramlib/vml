@@ -32,7 +32,7 @@ internals.collectionPayloadSchema = {
         id: Joi.string(),
         attributes: Joi.object().required().keys({
             title: Joi.string().required(),
-            description: Joi.string(),
+            description: Joi.string().allow(null),
             segments: Joi.array().required().items(
                 Joi.object().keys({
                     id: Joi.number().required(),
@@ -40,7 +40,7 @@ internals.collectionPayloadSchema = {
                         Joi.object().keys({
                             id: Joi.number().required(),
                             lines: Joi.array().required(),
-                            originalURL: Joi.string().required(),
+                            originalUrl: Joi.string().required(),
                             runningId: Joi.string(),
                             referenceTitle: Joi.string().required()
                         })
