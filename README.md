@@ -12,6 +12,10 @@ API server for Vande Mataram Library
 $ echo "details coming soon"
 ```
 
+npm install
+npm install typings -g
+typings install
+
 
 ## License
 

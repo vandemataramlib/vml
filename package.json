@@ -8,7 +8,8 @@
     "test": "lab -c",
     "test-cover": "lab -c -r html -o ./test/artifacts/coverage.html && open ./test/artifacts/coverage.html",
     "build": "tsc",
-    "lint": "tslint -c tslint.json './src/**/*.ts' './types/**/*.ts'"
+    "lint": "tslint -c tslint.json './src/**/*.ts' './types/**/*.ts'",
+    "production": "tsc && node -r  dotenv/config build/server.js"
   },
   "pre-commit": [
     "lint",
