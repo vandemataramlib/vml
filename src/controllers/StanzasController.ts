@@ -60,13 +60,14 @@ export class StanzaController implements Controller {
     getSerializedStanza = (request: Request, reply: IReply) => {
 
         const preParams: PreParams = request.pre;
+        const params: Params = request.params;
 
         let topLevelLinks: any = null;
 
         if (preParams.stanza) {
             topLevelLinks = {
-                self: Constants.API_SERVER_BASE_URL + Models.Stanza.URL(request.params.slug, request.params.subdocId,
-                    request.params.recordId, request.params.runningId)
+                self: Constants.API_SERVER_BASE_URL + Models.Stanza.URL(params.slug, params.subdocId,
+                    params.recordId, params.runningId)
             };
         }
 

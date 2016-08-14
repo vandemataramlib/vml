@@ -4,7 +4,7 @@ import { Deserializer } from "jsonapi-serializer";
 import { Models, Serializers, Constants } from "vml-common";
 
 import { Controller } from "../common/interfaces";
-import { Params, Query, PreParams } from "../plugins/Collections";
+import { Params, Query, PreParams } from "../plugins/collections";
 
 export class CollectionsController implements Controller {
     private dbCollection: Collection;
