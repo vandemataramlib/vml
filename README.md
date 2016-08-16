@@ -1,22 +1,26 @@
-# vml
+### > The backend source for [vandemataramlibrary.org](http://vandemataramlibrary.org).
 
-API server for Vande Mataram Library
-
-[![Dependency Status](https://david-dm.org/vandemataramlib/vml.svg)](https://david-dm.org/vandemataramlib/vml)
-[![devDependency Status](https://david-dm.org/vandemataramlib/vml/dev-status.svg?theme=shields.io)](https://david-dm.org/vandemataramlib/vml#info=devDependencies)
+## Development setup
 
 
-## Usage
+1. `npm install`
+2. `npm install -g typings`
+3. `typings install`
+4. Enter appropriate config in `.env` (see `.env.example` for required values).
+5. Seed the database.
 
-```bash
-$ echo "details coming soon"
+## Starting the server
+
+In development mode
+
+```js
+npm start
 ```
 
-npm install
-npm install typings -g
-typings install
+In production mode
 
+```js
+NODE_ENV=production npm start
+```
 
-## License
-
-MIT
+In production mode the server runs as a daemon.
