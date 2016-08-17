@@ -1,7 +1,11 @@
-### > The backend source for [vandemataramlibrary.org](http://vandemataramlibrary.org).
+> The backend source for [vandemataramlibrary.org](http://vandemataramlibrary.org).
 
-## Development setup
+## Requirements
 
+1. Node 4.x.
+2. MongoDB 3.x.
+
+## Installation
 
 1. `npm install`
 2. `npm install -g typings`
@@ -11,7 +15,7 @@
 
 ## Starting the server
 
-In development mode
+In development mode (with watching enabled):
 
 ```js
 npm start

@@ -4,16 +4,22 @@
   "description": "API server for Vande Mataram Library",
   "private": true,
   "scripts": {
-    "start": "tsc -w & nodemon --delay 1 -r dotenv/config build/server.js",
-    "test": "lab -c",
-    "test-cover": "lab -c -r html -o ./test/artifacts/coverage.html && open ./test/artifacts/coverage.html",
-    "build": "tsc",
+    "start": "per-env",
+    "start:development": "npm run build & npm run serve",
+    "start:production": "npm run build && npm run serve",
+    "build": "per-env",
+    "build:development": "tsc -w",
+    "build:production": "tsc",
+    "serve": "per-env",
+    "serve:development": "nodemon --delay 1 -r dotenv/config build/server.js",
+    "serve:production": "nohup node -r dotenv/config build/server.js &",
     "lint": "tslint -c tslint.json './src/**/*.ts' './types/**/*.ts'",
-    "production": "tsc && node -r  dotenv/config build/server.js"
+    "test": "lab -c",
+    "test-cover": "lab -c -r html -o ./test/artifacts/coverage.html && open ./test/artifacts/coverage.html"
   },
   "pre-commit": [
     "lint",
-    "build"
+    "build:production"
   ],
   "repository": {
     "type": "git",
@@ -42,6 +48,7 @@
     "joi": "^9.0.4",
     "jsonapi-serializer": "^3.3.0",
     "mongodb": "^2.2.5",
+    "per-env": "^1.0.2",
     "sanscript": "^0.0.2",
     "vision": "^4.1.0",
     "vml-common": "https://github.com/vandemataramlib/vml-common.git"
