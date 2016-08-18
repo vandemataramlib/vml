@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "code": "^3.0.2",
+    "exiting": "^2.0.1",
     "lab": "^10.9.0",
     "nodemon": "^1.10.0",
     "pre-commit": "^1.1.3",

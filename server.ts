@@ -1,4 +1,6 @@
 import * as Hapi from "hapi";
+const Exiting = require("exiting");
+
 const Composer = require("./src/config");
 
 Composer((err: Error, server: Hapi.Server) => {
@@ -7,7 +9,7 @@ Composer((err: Error, server: Hapi.Server) => {
         throw err;
     }
 
-    server.start((err) => {
+    new Exiting.Manager(server).start((err: Error) => {
 
         if (err) {
             throw err;
